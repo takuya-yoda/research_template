@@ -80,6 +80,10 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.yoda.git-nas-backup.
 - 動作確認: `launchctl kickstart gui/$(id -u)/com.yoda.git-nas-backup` → `~/Library/Logs/git-nas-backup.log` を確認
 - 解除: `launchctl bootout gui/$(id -u)/com.yoda.git-nas-backup`
 - 新しいプロジェクトを作っても追加設定は不要（`~/Git/*/scripts/backup_to_nas.sh` を自動で拾う）
+- **注意 (macOS TCC)**: バックアップ先のファイルは作成元アプリに紐づき (com.apple.macl)、
+  別コンテキストの launchd から置換できない。このため各プロジェクトの `scripts/backup_to_nas.sh` は
+  エージェント登録済みマシンでは自動的にエージェント経由 (`launchctl kickstart`) に委譲する。
+  バックアップ先 (`~/SynologyDrive/Home/Archive/Git/`) のファイルを手動で作成・編集しないこと
 
 ---
 

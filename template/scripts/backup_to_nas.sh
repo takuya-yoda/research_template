@@ -11,12 +11,25 @@
 #
 # 通常は launchd により日次で自動実行される (research_template の README 参照)。
 # 手動実行も可: scripts/backup_to_nas.sh
+#
+# 注意 (macOS TCC): バックアップ先のファイルには作成元アプリに紐づく com.apple.macl が
+# 付与され、別コンテキスト (launchd) から置換できなくなる。このため launchd エージェントが
+# 登録済みのマシンでは、手動実行もエージェント経由に委譲してコンテキストを統一する。
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REPO_NAME="$(basename "$ROOT")"
 DEST_BASE="$HOME/SynologyDrive/Home/Archive/Git"
 DEST="$DEST_BASE/$REPO_NAME"
+AGENT="com.yoda.git-nas-backup"
+
+# launchd エージェントがあれば委譲 (エージェント自身からは --direct で呼ばれる)
+if [ "${1:-}" != "--direct" ] && launchctl print "gui/$(id -u)/$AGENT" >/dev/null 2>&1; then
+    echo "launchd エージェント経由で全リポジトリをバックアップします"
+    launchctl kickstart "gui/$(id -u)/$AGENT"
+    echo "ログ: ~/Library/Logs/git-nas-backup.log"
+    exit 0
+fi
 
 # NAS 同期フォルダがないマシン (出先の PC 等) では何もせず正常終了
 if [ ! -d "$DEST_BASE" ]; then

@@ -9,7 +9,7 @@ echo "===== run_all_backups: $(date '+%Y-%m-%d %H:%M:%S') ====="
 status=0
 for script in "$GIT_DIR"/*/scripts/backup_to_nas.sh; do
     [ -f "$script" ] || continue
-    if ! bash "$script"; then
+    if ! bash "$script" --direct; then
         echo "!!! 失敗: $script" >&2
         status=1
     fi

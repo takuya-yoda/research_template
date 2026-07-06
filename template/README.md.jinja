@@ -52,8 +52,9 @@ uv run python ...   # 実行
 - `scripts/backup_to_nas.sh` が git 全履歴 (bundle) と git 管理外の保護対象
   (plan/discussions/ の写真、survey/papers/ の文献 PDF) を
   `~/SynologyDrive/Home/Archive/Git/{{ project_name }}/` へ一方向コピーし、Synology Drive Client が NAS へ同期する
-- 即時バックアップ: `scripts/backup_to_nas.sh` を手動実行
+- 即時バックアップ: `scripts/backup_to_nas.sh` を手動実行（launchd 設定済みマシンでは自動的にエージェント経由で実行される）
 - 日次自動実行の設定（マシンごとに 1 回）は research_template の README を参照
+- バックアップ先のファイルを手動で編集・作成しないこと（macOS の仕組み上、以後の自動バックアップが失敗する）
 
 ## テンプレート更新の取り込み
 
