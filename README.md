@@ -62,6 +62,25 @@ git diff                  # 反映内容を確認して commit
 - どのバージョンから生成されたかは各プロジェクトの `.copier-answers.yml` に記録されている（手動編集しない）
 - 質問の回答を変えたい場合は `copier update --data author_email=...` のように上書きできる
 
+### 4. NAS 日次自動バックアップを設定する（マシンごとに 1 回）
+
+生成された各プロジェクトは NAS への日次自動バックアップを前提に運用する。
+各プロジェクトの `scripts/backup_to_nas.sh` が git 全履歴 (bundle) と git 管理外の保護対象
+(plan/discussions/ の写真、survey/papers/ の文献 PDF) を
+`~/SynologyDrive/Home/Archive/Git/<リポジトリ名>/` へ一方向コピーする
+（作業リポジトリを SynologyDrive 内に置くと同期で .git が壊れうるため、この方式にしている）。
+
+launchd で毎日 12:00 に `~/Git` 配下の全プロジェクトを一括バックアップする設定:
+
+```bash
+cp ~/Git/research_template/machine_setup/com.yoda.git-nas-backup.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.yoda.git-nas-backup.plist
+```
+
+- 動作確認: `launchctl kickstart gui/$(id -u)/com.yoda.git-nas-backup` → `~/Library/Logs/git-nas-backup.log` を確認
+- 解除: `launchctl bootout gui/$(id -u)/com.yoda.git-nas-backup`
+- 新しいプロジェクトを作っても追加設定は不要（`~/Git/*/scripts/backup_to_nas.sh` を自動で拾う）
+
 ---
 
 ## 補足: なぜ Copier か

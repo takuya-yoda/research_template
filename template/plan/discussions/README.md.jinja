@@ -1,0 +1,35 @@
+# plan/discussions — 議論の一次記録
+
+共同研究者・指導教員との議論メモや黒板写真を保管する。1 議論 = 1 フォルダ。
+
+```
+plan/discussions/
+└── YYYY-MM-DD_<トピック>/
+    ├── memo.txt       # 議論メモ (git 追跡される)
+    ├── board_1.pdf    # 黒板写真・スキャン (git 管理外)
+    └── board_2.jpg
+```
+
+## 使い方
+
+```bash
+scripts/new_discussion.sh <トピック>   # 今日の日付でフォルダと memo.txt を作成
+```
+
+- 議論の要点・決定事項は `plan/log.md` にも日付付きで 1 行残し、詳細はここへ（日付で相互参照）
+- メモ (.txt / .md) は git で追跡される。写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) は git 管理外
+
+## 写真のバックアップ (NAS)
+
+このリポジトリは **launchd による日次自動バックアップを前提とした運用**になっている
+(`scripts/backup_to_nas.sh` が毎日実行され、git 履歴の bundle と git 管理外ファイルを NAS へコピーする)。
+
+- バックアップ先: `~/SynologyDrive/Home/Archive/Git/{{ project_name }}/plan/discussions/<議論フォルダ名>/`
+  （リポジトリ内と同じ相対パス。Synology Drive Client が NAS へ同期する）
+- 写真を置いた直後に即時バックアップしたい場合:
+
+```bash
+scripts/backup_to_nas.sh
+```
+
+- 自動実行の設定方法（マシンごとに 1 回）はテンプレートリポジトリ research_template の README を参照

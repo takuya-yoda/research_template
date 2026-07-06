@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.yoda.git-nas-backup</string>
+
+    <!-- ~/Git 配下の全プロジェクトの backup_to_nas.sh を実行 -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/yoda/Git/research_template/machine_setup/run_all_backups.sh</string>
+    </array>
+
+    <!-- 毎日 12:00。スリープ中だった場合は次の起床時に実行される -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>12</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/yoda/Library/Logs/git-nas-backup.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/yoda/Library/Logs/git-nas-backup.log</string>
+</dict>
+</plist>

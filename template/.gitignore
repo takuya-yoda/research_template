@@ -30,6 +30,13 @@ build/
 survey/papers/*
 !survey/papers/.gitkeep
 
+# === 議論記録の写真 (git 管理外。NAS へ日次バックアップ: scripts/backup_to_nas.sh) ===
+# PDF は全体ルール *.pdf で除外済み。メモ .txt/.md は追跡される
+plan/discussions/**/*.jpg
+plan/discussions/**/*.jpeg
+plan/discussions/**/*.png
+plan/discussions/**/*.heic
+
 # === Python ===
 .venv/
 __pycache__/
