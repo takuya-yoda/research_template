@@ -5,7 +5,7 @@
 ```
 plan/discussions/
 └── YYYY-MM-DD_<トピック>/
-    ├── memo.txt       # 議論メモ (git 追跡される)
+    ├── memo.md        # 議論メモ (git 追跡される)
     ├── board_1.pdf    # 黒板写真・スキャン (git 管理外)
     └── board_2.jpg
 ```
@@ -13,11 +13,11 @@ plan/discussions/
 ## 使い方
 
 ```bash
-scripts/new_discussion.sh <トピック>   # 今日の日付でフォルダと memo.txt を作成
+scripts/new_discussion.sh <トピック>   # 今日の日付でフォルダと memo.md を作成
 ```
 
 - 議論の要点・決定事項は `plan/log.md` にも日付付きで 1 行残し、詳細はここへ（日付で相互参照）
-- メモ (.txt / .md) は git で追跡される。写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) は git 管理外
+- メモ (.md) は git で追跡される。写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) は git 管理外
 
 ## 写真のバックアップ (NAS)
 

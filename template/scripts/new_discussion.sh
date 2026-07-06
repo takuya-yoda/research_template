@@ -5,7 +5,7 @@
 #   scripts/new_discussion.sh <トピック>
 # 例:
 #   scripts/new_discussion.sh gup_definition
-#     -> plan/discussions/2026-07-06_gup_definition/memo.txt を作成
+#     -> plan/discussions/2026-07-06_gup_definition/memo.md を作成
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -19,16 +19,17 @@ TOPIC="$1"
 TODAY="$(date +%F)"
 DIR="$ROOT/plan/discussions/${TODAY}_${TOPIC}"
 
-if [ -e "$DIR/memo.txt" ]; then
-    echo "エラー: 既に存在します: $DIR/memo.txt" >&2
+if [ -e "$DIR/memo.md" ]; then
+    echo "エラー: 既に存在します: $DIR/memo.md" >&2
     exit 1
 fi
 
 mkdir -p "$DIR"
-cat > "$DIR/memo.txt" <<EOF
-議論記録: $TOPIC
-日付: $TODAY
-参加者:
+cat > "$DIR/memo.md" <<EOF
+# 議論記録: $TOPIC
+
+- 日付: $TODAY
+- 参加者:
 
 ## 要点
 
@@ -39,6 +40,6 @@ cat > "$DIR/memo.txt" <<EOF
 -
 EOF
 
-echo "作成しました: $DIR/memo.txt"
+echo "作成しました: $DIR/memo.md"
 echo "黒板写真 (.pdf/.jpg) も同じフォルダへ (git 管理外)。plan/log.md にも 1 行残すこと"
 echo "NAS へは日次で自動バックアップされます。即時反映: scripts/backup_to_nas.sh"
