@@ -9,13 +9,29 @@
 # CLI から使う場合はノートのフォルダで:
 #   latexmk -r ../../latexmkrc note.tex
 
-# --- 共通 tex 資産の検索パス (このファイルの位置 = プロジェクトルート基準) ---
+# --- 共通 tex 資産の検索パス ---
+# プロジェクトルート = tex_common/ を含む祖先ディレクトリ。
+# ビルド時の cwd (ノートのフォルダ or ルート) から上へ辿って検出する。
+# 注: latexmk は rc を文字列 eval で実行するため __FILE__ ではルートを特定できない
 use File::Basename;
-use Cwd 'abs_path';
-my $ROOT = dirname(abs_path(__FILE__));
-ensure_path('TEXINPUTS', "$ROOT/tex_common//");
-ensure_path('BSTINPUTS', "$ROOT/tex_common//");
-ensure_path('BIBINPUTS', "$ROOT/survey//");
+use Cwd qw(getcwd abs_path);
+my $ROOT;
+{
+    my $dir = getcwd();
+    while (1) {
+        if ( -d "$dir/tex_common" ) { $ROOT = $dir; last; }
+        my $parent = dirname($dir);
+        last if $parent eq $dir;   # ファイルシステムのルートまで到達
+        $dir = $parent;
+    }
+}
+if ($ROOT) {
+    ensure_path('TEXINPUTS', "$ROOT/tex_common//");
+    ensure_path('BSTINPUTS', "$ROOT/tex_common//");
+    ensure_path('BIBINPUTS', "$ROOT/survey//");
+} else {
+    warn "latexmkrc: tex_common/ が見つかりません (プロジェクト外でのビルド?)\n";
+}
 
 # --- デフォルト: upLaTeX (DVI -> dvipdfmx で PDF) ---
 $latex     = 'uplatex -synctex=1 -interaction=nonstopmode -file-line-error %O %S';

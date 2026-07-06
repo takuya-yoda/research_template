@@ -34,7 +34,8 @@ if [ -e "$NOTE_DIR/note.tex" ]; then
 fi
 
 mkdir -p "$NOTE_DIR/fig"
-sed "s/__NOTE_TITLE__/$NAME/" "$SKELETON" > "$NOTE_DIR/note.tex"
+TITLE="$(echo "$NAME" | tr '_' ' ')"   # _ は TeX の数式記号なのでタイトルでは空白に変換
+sed "s/__NOTE_TITLE__/$TITLE/" "$SKELETON" > "$NOTE_DIR/note.tex"
 
 echo "作成しました: $NOTE_DIR/note.tex"
 echo "VSCode で開いて保存すると自動コンパイルされます (CLI: cd $DEST_DIR/$NAME && latexmk -r $ROOT/latexmkrc note.tex)"
