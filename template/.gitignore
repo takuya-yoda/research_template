@@ -1,0 +1,40 @@
+# === LaTeX 中間ファイル ===
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.dvi
+*.nav
+*.snm
+*.vrb
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+*.bcf
+*.run.xml
+build/
+
+# === PDF: 生成物・文献は追跡しない。図 (fig/ 配下) のみ追跡 ===
+*.pdf
+!**/fig/**/*.pdf
+!**/fig/*.pdf
+
+# === 文献 PDF 置場 (ローカル保管のみ) ===
+survey/papers/*
+!survey/papers/.gitkeep
+
+# === Python ===
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+
+# === OS ===
+.DS_Store

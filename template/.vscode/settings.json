@@ -1,0 +1,29 @@
+{
+    // 保存時に自動コンパイル (エンジン判定・検索パスはルートの latexmkrc に集約)
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-r",
+                "%WORKSPACE_FOLDER%/latexmkrc",
+                "%DOC%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk (auto engine)",
+            "tools": ["latexmk"]
+        }
+    ],
+    "latex-workshop.latex.recipe.default": "first",
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux", "*.bbl", "*.blg", "*.log", "*.out", "*.toc", "*.fls",
+        "*.fdb_latexmk", "*.dvi", "*.nav", "*.snm", "*.vrb", "*.lof", "*.lot",
+        "*.idx", "*.ind", "*.ilg", "*.bcf", "*.run.xml"
+    ],
+    "latex-workshop.intellisense.package.dirs": ["%WORKSPACE_FOLDER%/.vscode/cwl"]
+}

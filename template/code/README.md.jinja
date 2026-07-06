@@ -1,0 +1,35 @@
+# code — Python 開発 ({{ project_name }})
+
+このフォルダを Python プロジェクトのルートとして開発する (uv + src layout)。
+
+## セットアップ
+
+```bash
+cd code
+uv sync                 # .venv 作成 + 依存インストール (lockfile: uv.lock)
+```
+
+## 日常の使い方
+
+```bash
+uv run python <script>.py        # 仮想環境で実行
+uv run pytest                    # テスト実行
+uv add <package>                 # 依存を追加 (pyproject.toml + uv.lock が更新される)
+uv add --group dev <package>     # 開発用依存を追加
+```
+
+- 再利用するコードは `src/{{ project_name }}/` にパッケージとして書く
+- 使い捨ての実験スクリプト・ノートブックは `code/` 直下や `code/experiments/` に置き、育ってきたら `src/` へ昇格させる
+- 図の出力はノート/論文から参照しやすいよう各ノートの `fig/` か `code/out/` へ
+
+## 公開コードの切り出し (論文出版時)
+
+研究リポジトリ全体は公開しない。論文に付随するコードは専用の public リポジトリへ curated コピーする:
+
+1. 公開用リポジトリを新規作成 (例: `<論文名>_code`)
+2. `src/{{ project_name }}/` のうち論文に必要なモジュール、再現スクリプト、`pyproject.toml`、README (実行手順・依存・引用方法) をコピー
+3. 私的情報 (未公開ノートへの言及・内部パス・試行錯誤スクリプト) を含めない
+4. 論文の再現に必要な図の生成コマンドを README に明記
+5. 必要なら Zenodo 連携で DOI を取得し、論文に引用する
+
+最初から src layout のパッケージ構成にしてあるのは、この切り出しをコピーだけで済ませるため。

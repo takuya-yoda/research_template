@@ -1,0 +1,46 @@
+% note-layout.sty — ノート専用の体裁設定 (theory / survey/review 用)
+%
+% ★どちらの .sty を更新するか★
+%   - ノートの見た目だけの設定 (余白・行間・リスト体裁など)       → この note-layout.sty
+%   - ノート・論文の両方で使いたいマクロ (数式・注釈・色コメント) → common-macros.sty
+%
+% 論文 (revtex / jhep / ptep) はジャーナルの体裁を使うため、このファイルは読み込まない。
+\ProvidesPackage{note-layout}
+
+% 共通マクロを内部で読み込む (ノートは note-layout だけ usepackage すればよい)
+\RequirePackage{common-macros}
+
+%========================
+% Text & table packages
+%========================
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{framed}
+\usepackage{footnote}
+\usepackage{tablefootnote}
+
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{cite} % bibtex エラー時はこのパッケージをコメントアウトして切り分ける
+
+%========================
+% Dimensions Control
+%========================
+\usepackage[a4paper, margin=1in]{geometry}
+\linespread{1.5}
+\allowdisplaybreaks
+
+\setlength{\parindent}{0in}
+\numberwithin{equation}{section}
+
+\setlist[itemize]{topsep=0pt, itemsep=-2pt}
+\setlist[enumerate]{topsep=0pt, itemsep=-2pt}
+
+%========================
+% For Happy Writings
+%========================
+\newcommand{\myspace}{\vspace{\baselineskip}}
+\newcommand{\mydivider}{\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.8pt}}}

@@ -1,0 +1,104 @@
+% 日本語ノート雛形 (upLaTeX)
+% scripts/new_note.sh が __NOTE_TITLE__ を置換して配置する
+\documentclass[11pt,a4paper,uplatex,dvipdfmx]{ujarticle}
+\usepackage{note-layout}
+
+
+\begin{document}
+%========================
+% Title Page
+%========================
+\title{
+	__NOTE_TITLE__
+}
+\author{
+	\Large
+	{{ author_name_ja }} \footnote{ {{- author_email -}} }
+	\vspace{1em} \\
+	{\small{\it {{ affiliation_en }} }}
+}
+\date{\small{ \today }}
+\maketitle
+\thispagestyle{empty}
+
+% Abstract
+\begin{abstract}
+	概要
+\end{abstract}
+\vfill
+
+
+
+%========================
+% Contents Page
+%========================
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\thispagestyle{empty}
+
+
+
+
+%================================================================================
+%========================
+% Main Sections
+%========================
+\newpage
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\setcounter{footnote}{0}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+
+
+%========================
+\section{導入}
+\label{sec:intro}
+%========================
+
+
+
+
+%========================
+\section{結論と議論}
+\label{sec:conc}
+%========================
+
+
+
+
+%================================================================================
+\newpage
+\appendix
+
+%========================
+\section{補遺}
+\label{sec:appdx}
+%========================
+
+図
+\begin{figure}[H]
+	\centering
+%	\includegraphics[width=0.8\textwidth]{fig/fig_name.pdf}
+	\caption{
+		説明文
+	}
+	\label{fig:fig_name}
+\end{figure}
+
+
+
+
+%================================================================================
+\newpage
+%========================
+% References
+%========================
+% 文献 DB は survey/ref.bib (latexmkrc の BIBINPUTS 経由で解決される)
+\bibliographystyle{utphys}
+\bibliography{ref}
+
+
+
+\end{document}

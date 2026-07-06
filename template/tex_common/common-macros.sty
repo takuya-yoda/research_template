@@ -1,0 +1,92 @@
+% common-macros.sty — 全文書共通の数式マクロ・注釈コマンド
+%
+% ★どちらの .sty を更新するか★
+%   - ノート・論文の両方で使いたいマクロ (数式・注釈・色コメント) → この common-macros.sty
+%   - ノートの見た目だけの設定 (余白・行間・リスト体裁など)       → note-layout.sty
+%
+% 論文 (revtex / jhep / ptep) からはこのファイルだけを読み込む。
+% ジャーナルクラスと衝突しうるレイアウト系パッケージはここに入れないこと。
+\ProvidesPackage{common-macros}
+
+%========================
+% Math packages
+%========================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{romannum}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{slashed}
+\usepackage{cancel}
+
+\usepackage{xcolor}
+\usepackage{xparse}
+\usepackage{tikz}
+
+%========================
+% Math Operators
+%========================
+%\DeclareMathOperator{\ope}{ope}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\supp}{supp}
+\DeclareMathOperator*{\sign}{sign}
+
+\DeclareMathOperator{\erfc}{erfc}
+\DeclareMathOperator{\sinc}{sinc}
+
+\newcommand{\geom}[4]{F \left(\begin{array}{c} {#1}, {#2} \\ {#3}  \end{array} ; {#4} \right)}
+
+\newcommand{\sgn}{\mathrm{sgn}}
+
+%========================
+% Annotations
+%========================
+\newcommand{\mywarn}[1]{\textcolor{red}{#1}}
+\newcommand{\mycomm}[1]{\textcolor{blue}{#1}}
+\newcommand{\myinfo}[1]{\textcolor{green}{#1}}
+
+% ===== 検算未了マーク =====
+% \tbcfalse に変えると全箇所が一括で黒に戻る
+\definecolor{tbcred}{RGB}{190,30,45}
+\newif\iftbc \tbctrue
+\newcommand{\tbc}[1]{\iftbc{\color{tbcred}#1}\else#1\fi}    % インライン用（文章・$数式$）
+\newenvironment{tbcblock}{\iftbc\color{tbcred}\fi}{}        % ブロック用（align 等を含む範囲）
+
+%========================
+% Math shortcuts
+%========================
+\newcommand{\ut}[0]{\mathbf{1}}
+\newcommand{\myint}{\mathbb{Z}}
+\newcommand{\myreal}{\mathbb{R}}
+
+\newcommand{\kg}[2]{\langle#1,#2\rangle}
+\newcommand{\ddfi}[1]{\frac{\dd{#1}}{2\pi\sqrt{2#1}}}
+\newcommand{\ddf}[1]{\dd{#1}}
+
+%=====================================
+\newcommand{\nn}{\nonumber\\}
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrm}[1]{\left\{ #1 \right\}}
+\newcommand{\lrl}[1]{\left[ #1 \right]}
+%=====================================
+
+%========================
+% Languages
+%========================
+% pdfLaTeX 文書中で部分的に日本語を使う: \jp{日本語}
+\usepackage{CJKutf8}
+\newcommand*{\jp}[1]{%
+	\begin{CJK}{UTF8}{ipxm}#1\end{CJK}%
+}
+
+%============================
+% Color comments (共同執筆時の発言者色分け。適宜追加・変更する)
+%============================
+\newcommand{\NT}[1]{\textcolor{magenta}{#1}}
+\newcommand{\MD}[1]{\textcolor{blue}{#1}}
+\newcommand{\PN}[1]{\textcolor{red}{#1}}
+\newcommand{\NTmod}[1]{\textcolor[rgb]{0,0.7,0}{#1}}
+\newcommand{\md}[1]{\textcolor{orange}{#1}}

@@ -1,0 +1,40 @@
+# =============================================================
+# 研究プロジェクトテンプレート (Copier)
+# 運用方法は README.md を参照
+# =============================================================
+_min_copier_version: "9.0.0"
+_subdirectory: template
+
+project_name:
+  type: str
+  help: プロジェクト名 (小文字英数字と _ のみ。Python パッケージ名にもなる)
+  placeholder: my_research_topic
+  validator: >-
+    {% if not (project_name | regex_search('^[a-z][a-z0-9_]*$')) %}
+    小文字英字始まり・英数字とアンダースコアのみで指定してください
+    {% endif %}
+
+project_description:
+  type: str
+  help: プロジェクトの一行説明
+  default: ""
+
+author_name_ja:
+  type: str
+  help: 著者名 (日本語ノート用)
+  default: 世田拓也
+
+author_name_en:
+  type: str
+  help: Author name (English notes / papers)
+  default: Takuya Yoda
+
+author_email:
+  type: str
+  help: 連絡先メールアドレス (tex 雛形の脚注に入る)
+  default: t.yoda.gauge@gmail.com
+
+affiliation_en:
+  type: str
+  help: Affiliation (English)
+  default: Department of Physics, Kyoto University, Kyoto 606-8502, Japan

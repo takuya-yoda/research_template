@@ -1,0 +1,53 @@
+% 論文雛形: JHEP (Journal of High Energy Physics)
+% 要 jheppub.sty: tex_common/journals/jhep/ に配置する (入手方法は tex_common/journals/README.md)
+% scripts/new_paper.sh が __PAPER_TITLE__ を置換して配置する
+\documentclass[11pt,a4paper]{article}
+\usepackage{jheppub}
+\usepackage{common-macros} % 数式マクロはノートと共通 (tex_common/common-macros.sty)
+
+\title{__PAPER_TITLE__}
+
+\author[a]{ {{- author_name_en -}} }
+\affiliation[a]{ {{- affiliation_en -}} }
+\emailAdd{ {{- author_email -}} }
+
+% \author[b]{Coauthor Name}
+% \affiliation[b]{Coauthor Affiliation}
+% \emailAdd{coauthor@example.org}
+
+\abstract{
+	Abstract here.
+}
+
+
+\begin{document}
+\maketitle
+\flushbottom
+
+
+%========================
+\section{Introduction}
+\label{sec:intro}
+%========================
+
+
+
+%========================
+\section{Conclusion}
+\label{sec:conc}
+%========================
+
+
+\acknowledgments
+Acknowledgments here.
+
+
+%\appendix
+%\section{Appendix}
+
+
+% 文献 DB は survey/ref.bib (latexmkrc の BIBINPUTS 経由で解決される)
+\bibliographystyle{JHEP}
+\bibliography{ref}
+
+\end{document}

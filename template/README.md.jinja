@@ -1,0 +1,59 @@
+# {{ project_name }}
+
+{{ project_description }}
+
+## 構成
+
+| フォルダ | 役割 |
+|---|---|
+| [survey/](survey/) | 業界研究: 論文要約 md・レビュー tex・文献 DB (ref.bib)・文献 PDF (git 管理外) |
+| [theory/](theory/) | 理論計算ノート (tex)。1 ノート = 1 フォルダ |
+| [paper/](paper/) | 論文草稿。共同執筆・投稿段階で Overleaf 連携リポジトリへ分離 |
+| [code/](code/) | Python 開発ルート (uv + src layout) |
+| [plan/](plan/) | 研究計画 (research_plan.md)・研究ログ (log.md) |
+| [archive/](archive/) | 過去の遺産。閲覧のみ・ビルド対象外 |
+| [tex_common/](tex_common/) | 共通 tex 資産 (マクロ・体裁・bst・雛形)。ノートは置かない |
+| [scripts/](scripts/) | ノート/論文の新規作成スクリプト |
+
+## LaTeX: 書き方とビルド
+
+```bash
+scripts/new_note.sh theory <ノート名> <ja|en>       # 理論ノート作成
+scripts/new_note.sh survey/review <ノート名> <ja|en> # レビューノート作成
+scripts/new_paper.sh <論文名> <aps-revtex|jhep|ptep> # 論文草稿作成
+```
+
+- **VSCode (LaTeX Workshop) で保存すると自動コンパイル**。upLaTeX / pdfLaTeX は文書クラスから自動判定される (ルートの `latexmkrc`)
+- 共通資産は検索パスで解決されるため、各ノートに .sty / .bst / .bib を置かない
+  - 数式マクロ追加 (ノート・論文共通) → `tex_common/common-macros.sty`
+  - ノート体裁の変更 → `tex_common/note-layout.sty`
+  - 文献追加 → `survey/ref.bib`
+- CLI でビルドする場合:
+
+```bash
+cd theory/<ノート名>
+latexmk -r ../../latexmkrc note.tex
+```
+
+## Python
+
+```bash
+cd code
+uv sync             # 環境構築
+uv run python ...   # 実行
+```
+
+詳細と公開コードの切り出し手順は [code/README.md](code/README.md)。
+
+## テンプレート更新の取り込み
+
+このプロジェクトは research_template ([GitHub](https://github.com/yoddycd/research_template)) から生成されている。
+テンプレート側の改善を取り込むには:
+
+```bash
+git status        # working tree が clean であることを確認
+copier update     # 最新タグとの差分を 3-way merge で適用
+git diff          # 内容を確認して commit
+```
+
+生成元バージョンは `.copier-answers.yml` に記録されている (手動編集しない)。

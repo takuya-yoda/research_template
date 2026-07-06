@@ -1,0 +1,45 @@
+# latexmkrc — プロジェクト共通の LaTeX ビルド設定
+#
+# - 文書クラスから (u)pLaTeX / pdfLaTeX を自動判定する
+#   (ujarticle 等の日本語クラス → upLaTeX + dvipdfmx、それ以外 → pdfLaTeX)
+# - 共通スタイル (tex_common/) と文献 DB (survey/ref.bib) を検索パスに追加するので、
+#   各ノート/論文フォルダに .sty / .bst / .bib をコピーする必要はない
+#
+# VSCode (LaTeX Workshop) は保存時に `latexmk -r <このファイル> <対象>` を実行する。
+# CLI から使う場合はノートのフォルダで:
+#   latexmk -r ../../latexmkrc note.tex
+
+# --- 共通 tex 資産の検索パス (このファイルの位置 = プロジェクトルート基準) ---
+use File::Basename;
+use Cwd 'abs_path';
+my $ROOT = dirname(abs_path(__FILE__));
+ensure_path('TEXINPUTS', "$ROOT/tex_common//");
+ensure_path('BSTINPUTS', "$ROOT/tex_common//");
+ensure_path('BIBINPUTS', "$ROOT/survey//");
+
+# --- デフォルト: upLaTeX (DVI -> dvipdfmx で PDF) ---
+$latex     = 'uplatex -synctex=1 -interaction=nonstopmode -file-line-error %O %S';
+$bibtex    = 'upbibtex %O %B';
+$dvipdf    = 'dvipdfmx %O -o %D %S';
+$makeindex = 'upmendex %O -o %D %S';
+$pdf_mode  = 3;
+
+# --- 対象 .tex の文書クラスを見て pdfLaTeX へ切替 ---
+foreach my $arg (@ARGV) {
+    next if $arg =~ /^-/;                 # オプションはスキップ
+    my $f = $arg;
+    $f .= '.tex' unless $f =~ /\.tex$/;   # 拡張子なしで渡された場合に補完
+    next unless -e $f;
+    open(my $fh, '<', $f) or next;
+    my $src = do { local $/; <$fh> }; close($fh);
+    if ($src !~ /uplatex|\bplatex\b|ujarticle|jarticle|jsarticle|jsbook|ltjs|jclasses/i) {
+        $pdf_mode  = 1;                   # pdfLaTeX: 直接 PDF
+        $pdflatex  = 'pdflatex -synctex=1 -interaction=nonstopmode -file-line-error %O %S';
+        $bibtex    = 'bibtex %O %B';
+        $makeindex = 'makeindex %O -o %D %S';
+    }
+    last;
+}
+
+# latexmk -c / -C で消す追加拡張子
+$clean_ext = 'synctex.gz run.xml bcf';

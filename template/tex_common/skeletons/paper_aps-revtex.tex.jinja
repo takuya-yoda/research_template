@@ -1,0 +1,56 @@
+% 論文雛形: APS 系ジャーナル (PRL / PRA-PRE / PRB / PRD / PRX / PRResearch)
+% クラス: revtex4-2 (TeX Live 同梱)
+% - 投稿先に応じてクラスオプションを変更: prl, pra, prb, prd, prx, prresearch ...
+% - 草稿は preprint、投稿時は reprint (二段組) に切替
+% scripts/new_paper.sh が __PAPER_TITLE__ を置換して配置する
+\documentclass[aps,prb,preprint,superscriptaddress,nofootinbib]{revtex4-2}
+\usepackage{graphicx}
+\usepackage{common-macros} % 数式マクロはノートと共通 (tex_common/common-macros.sty)
+
+\begin{document}
+
+\title{__PAPER_TITLE__}
+
+\author{ {{- author_name_en -}} }
+\email{ {{- author_email -}} }
+\affiliation{ {{- affiliation_en -}} }
+
+% \author{Coauthor Name}
+% \affiliation{Coauthor Affiliation}
+
+\date{\today}
+
+\begin{abstract}
+	Abstract here.
+\end{abstract}
+
+\maketitle
+
+
+%========================
+\section{Introduction}
+\label{sec:intro}
+%========================
+
+
+
+%========================
+\section{Conclusion}
+\label{sec:conc}
+%========================
+
+
+\begin{acknowledgments}
+	Acknowledgments here.
+\end{acknowledgments}
+
+
+%\appendix
+%\section{Appendix}
+
+
+% 文献 DB は survey/ref.bib (latexmkrc の BIBINPUTS 経由で解決される)
+\bibliographystyle{apsrev4-2}
+\bibliography{ref}
+
+\end{document}

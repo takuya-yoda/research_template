@@ -1,0 +1,61 @@
+% 論文雛形: PTEP (Progress of Theoretical and Experimental Physics)
+% 草稿段階は article で執筆し、投稿時に PTEP 公式クラス (ptephy.cls) へ切り替える。
+% ptephy.cls は tex_common/journals/ptep/ に配置する (入手方法は tex_common/journals/README.md)
+% 切替例:  \documentclass[a4paper]{ptephy}
+% scripts/new_paper.sh が __PAPER_TITLE__ を置換して配置する
+\documentclass[11pt,a4paper]{article}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{common-macros} % 数式マクロはノートと共通 (tex_common/common-macros.sty)
+
+\begin{document}
+
+%========================
+% Title Page
+%========================
+\title{
+	__PAPER_TITLE__
+}
+\author{
+	\Large
+	{{ author_name_en }} \footnote{ {{- author_email -}} }
+	\vspace{1em} \\
+	{\small{\it {{ affiliation_en }} }}
+}
+\date{\small{ \today }}
+\maketitle
+
+\begin{abstract}
+	Abstract here.
+\end{abstract}
+
+
+%========================
+\section{Introduction}
+\label{sec:intro}
+%========================
+
+
+
+%========================
+\section{Conclusion}
+\label{sec:conc}
+%========================
+
+
+\subsection*{Acknowledgments}
+Acknowledgments here.
+
+
+%\appendix
+%\section{Appendix}
+
+
+% 文献 DB は survey/ref.bib (latexmkrc の BIBINPUTS 経由で解決される)
+% PTEP 投稿時は OUP 指定の参考文献スタイルに合わせる
+\bibliographystyle{utphys}
+\bibliography{ref}
+
+\end{document}

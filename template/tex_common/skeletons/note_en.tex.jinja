@@ -1,0 +1,103 @@
+% English note skeleton (pdfLaTeX)
+% scripts/new_note.sh が __NOTE_TITLE__ を置換して配置する
+\documentclass{article}
+\usepackage{note-layout}
+
+
+\begin{document}
+%========================
+% Title Page
+%========================
+\title{
+	__NOTE_TITLE__
+}
+\author{
+	\Large
+	{{ author_name_en }} \footnote{ {{- author_email -}} }
+	\vspace{1em} \\
+	{\small{\it {{ affiliation_en }} }}
+}
+\date{\small{ \today }}
+\maketitle
+\thispagestyle{empty}
+
+% Abstract
+\begin{abstract}
+	Abstract here. \jp{（日本語コメントも可能）}
+\end{abstract}
+\vfill
+
+
+
+%========================
+% Contents Page
+%========================
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\thispagestyle{empty}
+
+
+
+
+%================================================================================
+%========================
+% Main Sections
+%========================
+\newpage
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\setcounter{footnote}{0}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+
+
+%========================
+\section{Introduction}
+\label{sec:intro}
+%========================
+
+
+
+
+%========================
+\section{Conclusion and Discussion}
+\label{sec:conc}
+%========================
+
+
+
+
+%================================================================================
+\newpage
+\appendix
+
+%========================
+\section{Appendix}
+\label{sec:appdx}
+%========================
+
+\begin{figure}[H]
+	\centering
+%	\includegraphics[width=0.8\textwidth]{fig/fig_name.pdf}
+	\caption{
+		Caption here.
+	}
+	\label{fig:fig_name}
+\end{figure}
+
+
+
+
+%================================================================================
+\newpage
+%========================
+% References
+%========================
+% Bibliography DB: survey/ref.bib (resolved via BIBINPUTS in latexmkrc)
+\bibliographystyle{utphys}
+\bibliography{ref}
+
+
+
+\end{document}
