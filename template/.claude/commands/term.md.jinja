@@ -1,0 +1,46 @@
+---
+description: 学術用語を①用語辞典②標準教科書③広い普及の3点で裏付けて説明し、用語集にキャッシュする
+argument-hint: <用語>（省略時は直近の応答に出た専門語）
+allowed-tools: Read, WebSearch, WebFetch, Edit
+---
+
+学術用語「$ARGUMENTS」について、裏付け付きの説明を返す。引数が空なら直近の応答に登場した専門語を対象にする。
+
+## 手順
+
+1. **まず `survey/glossary.md` を Read** し、対象語のエントリがあるか確認する。
+   - 既存エントリがあり検証日が概ね1年以内なら、**web 検索せずにその内容を提示して終了**（高速化の核）。
+     「用語集キャッシュより（検証日 YYYY-MM-DD）」と明記する。
+   - 無い／古い場合のみ次へ進む。
+
+2. **実検証する**（WebSearch / WebFetch）。次の3点を集める：
+   - ① **用語辞典**の記載。対象語の分野を判定し、下表の**権威順**（公的合意体 → 査読制百科事典 → 定評ある辞書）に当てる。
+     境界・分野横断の語は複数分野を試す。当該用語の項目を実際に確認できたものだけ `検索確認済み` とし、
+     どれにも項目が無ければ ④ の補足どおりレビュー論文・原典で代替して `確認できず` を明記する（存在しない項目・版を作らない）。
+     | 分野 | 権威順の候補（試す順） |
+     |---|---|
+     | 化学 | IUPAC Gold Book（Compendium of Chemical Terminology）/ IUPAC Colour Books → Oxford Dictionary of Chemistry |
+     | 物理 | Scholarpedia（査読制）/ IUPAC・IUPAP の合意項目 → Oxford Dictionary of Physics → McGraw-Hill Dictionary/Encyclopedia of Physics → Encyclopedia of Mathematical Physics (Elsevier)。単位・定数は NIST / BIPM SI Brochure |
+     | 数学 | Encyclopedia of Mathematics（EMS, encyclopediaofmath.org）→ Oxford Dictionary of Mathematics（圏論等の分野特化は nLab） |
+     | 生物 | Gene Ontology / IUBMB・IUPAC-IUBMB 命名法（該当領域）→ Oxford Dictionary of Biology。分類は ICZN / ICN / NCBI Taxonomy |
+   - ② **学部・大学院の標準教科書**の記載（著者・書名・版・可能なら章）
+   - ③ ①②が**世界中の学術機関で広く使われている**根拠（採用シラバス・叢書・書評など具体物）
+
+3. **提示する**。定義に続けて①②③を列挙し、各出典に**確信度ラベル**を付す：
+   - `検索確認済み`（この実行で web に当たった）
+   - `訓練知識ベース`（未検索。記憶からの補足）
+   - `推定`（③のように soft な根拠。必ず根拠を併記）
+
+4. **`survey/glossary.md` に追記する**（Edit）。冒頭のエントリスキーマに従い、関連語をリンクする。
+
+## 反捏造要件（厳守）
+
+- **実際に検証した出典のみを引用する。** 存在しない版・ページ番号・「広く使われている」の断定を作らない。
+- 検証できなかった基準は空欄にせず **`確認できず`** と明記する。
+- 辞典・教科書の固有名や版は WebFetch で当たれた範囲に限定し、確信度で明確に区別する。
+- 基準③は一次資料が乏しく誇張が出やすい。断定せず、具体的な採用例か `推定` に留める。
+
+## 補足
+
+- 用語辞典が存在しない新しめの概念なら、レビュー論文・権威ある一次文献で代替し、その旨を明記する。
+- 分野判定に迷う場合は対象語の文脈（このプロジェクト: {{ project_description or "プロジェクトの分野" }}）を優先する。

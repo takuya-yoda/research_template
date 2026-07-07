@@ -14,6 +14,7 @@
 | [archive/](archive/) | 過去の遺産。閲覧のみ・ビルド対象外 |
 | [tex_common/](tex_common/) | 共通 tex 資産 (マクロ・体裁・bst・雛形)。ノートは置かない |
 | [scripts/](scripts/) | ノート/論文の新規作成スクリプト |
+| [.claude/commands/](.claude/commands/) | Claude Code の slash コマンド (例: `/term`)。個人設定 `.claude/settings*.json` は git 管理外 |
 
 ## LaTeX: 書き方とビルド
 
@@ -44,6 +45,12 @@ uv run python ...   # 実行
 ```
 
 詳細と公開コードの切り出し手順は [code/README.md](code/README.md)。
+
+## 学術用語の裏付け (`/term`)
+
+Claude Code で `/term <用語>` を使うと、用語辞典・標準教科書・広い普及の3点で裏付けた説明を返し、
+[survey/glossary.md](survey/glossary.md) にキャッシュする（再出現語は再検索なしで即応答）。
+規約は [CLAUDE.md](CLAUDE.md) 参照（未検証の出典を権威的に提示しない・確信度を明示する）。
 
 ## バックアップ (NAS)
 
