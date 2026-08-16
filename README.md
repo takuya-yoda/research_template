@@ -47,7 +47,49 @@ git tag v0.2.0            # セマンティックバージョニング
 git push && git push --tags
 ```
 
-### 3. テンプレートの更新を既存プロジェクトへ反映する
+### 3. 新機能を試用ブランチで検証してから配信する
+
+見出し構成や運用が固まっていない機能は、いきなりタグを打たず**試用ブランチ**で実プロジェクトに試させ、
+フィードバックを反映してから main へマージする。タグを打つまで他プロジェクトには一切配信されない。
+
+```bash
+# 1. 試用ブランチを切る（コミットは追記のみ。rebase / amend / squash merge は禁止）
+cd ~/Git/research_template
+git switch -c feat/<機能名>
+# 編集 → commit
+git push -u origin feat/<機能名>          # gh: 参照のプロジェクトがあるため push 必須
+
+# 2. 試用プロジェクトで取り込む（working tree が clean であること）
+cd ~/Git/<試用プロジェクト>
+copier update --vcs-ref feat/<機能名>
+git diff                                  # 確認して commit
+
+# 3. 使ってみる → フィードバックをテンプレート側へ反映 → commit/push → 2 を再実行（何周でも可）
+
+# 4. 確定したら main へマージしてタグを打つ（ここで初めて全プロジェクトへ配信される）
+cd ~/Git/research_template
+git switch main && git merge --no-ff feat/<機能名>
+git tag v0.4.0 && git push && git push --tags
+```
+
+- **試用ブランチを rebase / force push しない**: `copier update` は `.copier-answers.yml` の `_commit` を
+  テンプレートリポジトリから再チェックアウトして旧状態を再生成する。試用プロジェクトが取り込んだコミットを
+  消すと、以後そのプロジェクトの `copier update` が「その ref が無い」で失敗する。
+  同じ理由で main へは `--no-ff` マージ（squash は不可）
+- **タグを打つまで未試用プロジェクトは無影響**: copier は既定で最新の非プレリリースタグを見るため、
+  ブランチもプレリリースタグ (`v0.4.0-rc1` 等) も自動では配信されない
+- **`--vcs-ref` はその ref までの全差分を適用する**: 試用先は先に `copier update` で最新タグまで上げておく。
+  古いバージョンのまま試用ブランチを当てると、途中のタグの変更まで同時に降ってくる
+- **配るのはコピー元の雛形 (`_template.md`) に限る**: `survey/notes/_template.md` や `plan/design/_template.md` の
+  ように「コピーして使う」形式ならプロジェクト側が原本を編集しないため、雛形を何度改訂しても衝突しない。
+  逆に中身を埋めさせる形式のファイル（`plan/research_plan.md` 等）を改訂すると全プロジェクトで衝突する
+- **`ai_instructions/` を編集する場合**: `~/.claude/CLAUDE.md` がこのパスを直接 import しているため、
+  ブランチをチェックアウトしている間は AI への指示自体が入れ替わる。
+  `git worktree add ../research_template_dev feat/<機能名>` で別ディレクトリ作業にし、
+  `~/Git/research_template` は main に固定するのが安全
+- ブランチは NAS バックアップの対象に自動的に含まれる (`git bundle --all`)
+
+### 4. テンプレートの更新を既存プロジェクトへ反映する
 
 各プロジェクト側で `copier update` を実行する（working tree が clean であること）。
 
@@ -62,7 +104,7 @@ git diff                  # 反映内容を確認して commit
 - どのバージョンから生成されたかは各プロジェクトの `.copier-answers.yml` に記録されている（手動編集しない）
 - 質問の回答を変えたい場合は `copier update --data author_email=...` のように上書きできる
 
-### 4. NAS 日次自動バックアップを設定する（マシンごとに 1 回）
+### 5. NAS 日次自動バックアップを設定する（マシンごとに 1 回）
 
 生成された各プロジェクトは NAS への日次自動バックアップを前提に運用する。
 各プロジェクトの `scripts/backup_to_nas.sh` が git 全履歴 (bundle) と git 管理外の保護対象
