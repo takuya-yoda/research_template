@@ -63,3 +63,25 @@ cp plan/design/_design.md       plan/design/<案件名>/design.md
 - 記録が集まった段階でテンプレート側 (research_template) の雛形を改訂し、
   `copier update` で各プロジェクトへ配信する。そのとき見出し構成が変わりうる
 - 既に書いた `<案件名>/` の中身は雛形の改訂に追随しなくてよい（コピー後は各プロジェクトの持ち物）
+
+
+## 参考文献
+<!-- 今後，以下の文献などを参考にしつつ，雛形を改善していく -->
+
+- [ソフトウェア工学 講義資料（東大理学部・石川冬樹）](https://research.nii.ac.jp/~f-ishikawa/work/IS-SE/)
+  - 参照箇所: スライド (1) ドメイン分析・要求分析 → (2) システム分析・設計 → (5) 保守・管理（全回 PDF 公開、2022 年度版）
+  - 学べること: 日本語で全工程（要件→設計→実装→保守）の地図を最短で得られる。
+    (5) 保守・管理は他の公開資料に代替がない。requirements.md / design.md の工程分割の妥当性確認に使う
+- [MIT 6.102: Software Construction](https://web.mit.edu/6.102/www/sp25/)
+  - 参照箇所: Readings 04 Specifications → 05 Designing Specifications → 06 Abstract Data Types →
+    07 Abstraction Functions & Rep Invariants（この優先順。全 19 本 HTML 公開）
+  - 学べること: 実装前に語彙を抽出し 1 つの型・1 つの関数の契約（事前・事後条件、表現不変条件）を書く技法。
+    requirements.md の用語定義・受入基準、design.md のインタフェース仕様の書き方の手本になる
+- [CMU 17-214/514: Principles of Software Construction](https://cmu-17-214.github.io/s2026/index.html)
+  - 参照箇所: Schedule のスライド Responsibility Assignment → Design Practice → Refactoring and
+    Anti-patterns → API Design → Specifications and Unit Testing → Testability（この優先順。
+    Google Slides のためリンク切れ時は [2022 年版 PDF](https://cmu-17-214.github.io/s2022/slides/) で代替）
+  - 学べること: 複数クラスへの責務の配り方（MIT 6.102 より粗い粒度）。ディレクトリ・クラスの再構成を
+    繰り返す前に分割軸を宣言するための語彙で、design.md の設計方針 (3 節)・構成 (7・8 節) に使う
+- 読む順序: 石川スライドで地図 → MIT 6.102 で契約記述 → CMU 17-214 で責務割当。
+  契約が書けなければ責務の割当も検証できないため MIT → CMU の順
