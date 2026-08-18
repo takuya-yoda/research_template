@@ -537,14 +537,14 @@ results/
 | （例）test_save_and_load_results | 保存した results を読み戻して一致 |
 | （例）test_existing_out_dir_aborts | FR-02-a．既存ファイルが変更されない |
 
-### 12.3 受入テスト（requirements.md の AT-XX をそのまま実行）
+### 12.3 受入テスト
 
-| AT ID | 自動化 | 実行方法 |
-|---|---|---|
-| （例）AT-01 | 可 | pytest |
-| （例）AT-04 | 可 | `k6 run load.js` |
-| （例）AT-05 | 可 | シェルスクリプトで 2 回実行し md5 比較 |
-| （例）AT-06 | 可 | pytest（学習済み成果物を前提とする） |
+<!-- この節に表を作らない．受入基準は requirements.md 10 節が唯一の正であり，
+     実装着手後は pytest のテストコードが正となる．
+     規約: pytest の関数名に AT-ID を埋める（def test_AT01_search_partial_match():）．
+     これにより pytest -k AT01 で個別実行でき，14 節の対応表も grep で生成できる．
+     pytest 以外で実行する受入基準（負荷試験など）は，その旨と実行コマンドを
+     テスト関数の docstring に書き，ここには書かない． -->
 
 
 ## 13. 設計判断記録（ADR）
