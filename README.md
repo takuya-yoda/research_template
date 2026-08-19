@@ -65,6 +65,8 @@ copier update --vcs-ref feat/<機能名>
 git diff                                  # 確認して commit
 
 # 3. 使ってみる → フィードバックをテンプレート側へ反映 → commit/push → 2 を再実行（何周でも可）
+#    気づいた点は試用プロジェクトの plan/template_feedback.md に溜まる。ここから拾って雛形を直す
+#    cat ~/Git/<試用プロジェクト>/plan/template_feedback.md
 
 # 4. 確定したら main へマージしてタグを打つ（ここで初めて全プロジェクトへ配信される）
 cd ~/Git/research_template
