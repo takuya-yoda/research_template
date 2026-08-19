@@ -20,7 +20,7 @@
 ### 1. 新規プロジェクトを作る
 
 ```bash
-copier copy gh:yoddycd/research_template ~/Git/<プロジェクト名>
+copier copy gh:takuya-yoda/research_template ~/Git/<プロジェクト名>
 # ローカルから作る場合
 copier copy ~/Git/research_template ~/Git/<プロジェクト名>
 ```
