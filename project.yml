@@ -1,4 +1,5 @@
 slug: research_template    # プロジェクトのフォルダ名と一致．一意
+category: 43_Tooling       # 親フォルダ名と一致．30→50 の移動で変えない
 title:                     # プロジェクトの full タイトル
 summary: 研究企画の copier 雛形   # 1 行．リマインドに出す
 priority: medium           # high / medium / low
