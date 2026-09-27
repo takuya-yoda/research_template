@@ -1,0 +1,14 @@
+slug: research_template    # プロジェクトのフォルダ名と一致．一意
+title:                     # プロジェクトの full タイトル
+summary: 研究企画の copier 雛形   # 1 行．リマインドに出す
+priority: medium           # high / medium / low
+status: active             # active / waiting / postponed / done / archived
+started: 2026-07-06        # 立項日 YYYY-MM-DD．移行物は最古ファイルの日付
+deadline:
+  initial:                 # 着手時の期日．以後変えない
+  current:                 # 現在の期日．変更理由は commit メッセージに
+next:                      # 次の一手
+from:
+  topics: []               # 引き継いだ 20_Resources の話題 ID
+  projects: []             # 引き継いだ企画の slug
+updated: 2026-09-27        # YYYY-MM-DD
