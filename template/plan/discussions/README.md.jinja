@@ -6,7 +6,7 @@
 plan/discussions/
 └── YYYY-MM-DD_<トピック>/
     ├── memo.md        # 議論メモ (git 追跡される)
-    ├── board_1.pdf    # 黒板写真・スキャン (git 管理外)
+    ├── board_1.pdf    # 黒板写真・スキャン (git-annex)
     └── board_2.jpg
 ```
 
@@ -17,19 +17,19 @@ scripts/new_discussion.sh <トピック>   # 今日の日付でフォルダと m
 ```
 
 - 議論の要点・決定事項は `plan/log.md` にも日付付きで 1 行残し、詳細はここへ（日付で相互参照）
-- メモ (.md) は git で追跡される。写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) は git 管理外
+- メモ (.md) は git で追跡される。写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) は git-annex で管理される
 
-## 写真のバックアップ (NAS)
+## 写真の保管 (NAS 正本)
 
-このリポジトリは **launchd による日次自動バックアップを前提とした運用**になっている
-(`scripts/backup_to_nas.sh` が毎日実行され、git 履歴の bundle と git 管理外ファイルを NAS へコピーする)。
+写真・PDF は git-annex に入り、本体は NAS に置かれる。GitHub には symlink のみが載る。
 
-- バックアップ先: `~/SynologyDrive/Home/Archive/Git/{{ project_name }}/plan/discussions/<議論フォルダ名>/`
-  （リポジトリ内と同じ相対パス。Synology Drive Client が NAS へ同期する）
-- 写真を置いた直後に即時バックアップしたい場合:
+- 写真を置いた後:
 
 ```bash
-scripts/backup_to_nas.sh
+git annex add .
+git commit -m "<対象>: <何を変えた>"
+git annex sync --content nas
 ```
 
-- 自動実行の設定方法（マシンごとに 1 回）はテンプレートリポジトリ research_template の README を参照
+- 手元に本体が無いとき: `git annex get <path>`
+- `scripts/backup_to_nas.sh` による日次バックアップは、NAS 正本化に伴い不要となったため 2026-09-28 に廃止した

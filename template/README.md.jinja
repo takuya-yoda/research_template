@@ -6,7 +6,7 @@
 
 | フォルダ | 役割 |
 |---|---|
-| [survey/](survey/) | 業界研究: 論文要約 md・レビュー tex・文献 DB (ref.bib)・文献 PDF (git 管理外) |
+| [survey/](survey/) | 業界研究: 論文要約 md・レビュー tex・文献 DB (ref.bib)・文献 PDF (git-annex) |
 | [theory/](theory/) | 理論計算ノート (tex)。1 ノート = 1 フォルダ |
 | [paper/](paper/) | 論文草稿。共同執筆・投稿段階で Overleaf 連携リポジトリへ分離 |
 | [code/](code/) | Python 開発ルート (uv + src layout) |
@@ -52,16 +52,16 @@ Claude Code で `/term <用語>` を使うと、用語辞典・標準教科書�
 [survey/glossary.md](survey/glossary.md) にキャッシュする（再出現語は再検索なしで即応答）。
 規約は [CLAUDE.md](CLAUDE.md) 参照（未検証の出典を権威的に提示しない・確信度を明示する）。
 
-## バックアップ (NAS)
+## 保管 (NAS 正本)
 
-このリポジトリは **launchd による日次自動バックアップを前提**に運用する。
+このリポジトリの正本は NAS の bare リポジトリに置く。GitHub は共有の窓口。
 
-- `scripts/backup_to_nas.sh` が git 全履歴 (bundle) と git 管理外の保護対象
-  (plan/discussions/ の写真、survey/papers/ の文献 PDF) を
-  `~/SynologyDrive/Home/Archive/Git/{{ project_name }}/` へ一方向コピーし、Synology Drive Client が NAS へ同期する
-- 即時バックアップ: `scripts/backup_to_nas.sh` を手動実行（launchd 設定済みマシンでは自動的にエージェント経由で実行される）
-- 日次自動実行の設定（マシンごとに 1 回）は research_template の README を参照
-- バックアップ先のファイルを手動で編集・作成しないこと（macOS の仕組み上、以後の自動バックアップが失敗する）
+- 議論記録の写真・PDF (plan/discussions/) と文献 PDF (survey/papers/) は git-annex で管理し、本体は NAS に置く。
+  GitHub には symlink のみが載る
+- 送るとき: `git annex add .` → commit → `git annex sync --content nas` → `git push origin main`
+- 取り寄せるとき: `git annex get <path>`
+- `scripts/backup_to_nas.sh` と launchd (`com.yoda.git-nas-backup`) による日次バックアップは、
+  NAS 正本化に伴い不要となったため 2026-09-28 に廃止した
 
 ## テンプレート更新の取り込み
 

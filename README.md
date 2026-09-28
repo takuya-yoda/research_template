@@ -89,7 +89,6 @@ git tag v0.4.0 && git push && git push --tags
   ブランチをチェックアウトしている間は AI への指示自体が入れ替わる。
   `git worktree add ../research_template_dev feat/<機能名>` で別ディレクトリ作業にし、
   `~/Git/research_template` は main に固定するのが安全
-- ブランチは NAS バックアップの対象に自動的に含まれる (`git bundle --all`)
 
 ### 4. テンプレートの更新を既存プロジェクトへ反映する
 
@@ -106,28 +105,23 @@ git diff                  # 反映内容を確認して commit
 - どのバージョンから生成されたかは各プロジェクトの `.copier-answers.yml` に記録されている（手動編集しない）
 - 質問の回答を変えたい場合は `copier update --data author_email=...` のように上書きできる
 
-### 5. NAS 日次自動バックアップを設定する（マシンごとに 1 回）
+### 5. 保管（NAS 正本）
 
-生成された各プロジェクトは NAS への日次自動バックアップを前提に運用する。
-各プロジェクトの `scripts/backup_to_nas.sh` が git 全履歴 (bundle) と git 管理外の保護対象
-(plan/discussions/ の写真、survey/papers/ の文献 PDF) を
-`~/SynologyDrive/Home/Archive/Git/<リポジトリ名>/` へ一方向コピーする
-（作業リポジトリを SynologyDrive 内に置くと同期で .git が壊れうるため、この方式にしている）。
+生成された各プロジェクトの正本は NAS の bare リポジトリに置く。GitHub は共有の窓口。
 
-launchd で毎日 12:00 に `~/Git` 配下の全プロジェクトを一括バックアップする設定:
+- 議論記録の写真・PDF (plan/discussions/) と文献 PDF (survey/papers/) は git-annex で管理する
+  （規則は `template/.gitattributes`）。本体は NAS に置かれ、GitHub には symlink のみが載る
+- 前提: 各プロジェクトで `git annex init` を済ませていること。
+  済ませていない clone で `git add` すると、写真・PDF が Git 本体に入り GitHub に載る
+- launchd (`com.yoda.git-nas-backup`) と `scripts/backup_to_nas.sh` による日次バックアップは、
+  NAS 正本化に伴い不要となったため 2026-09-28 に廃止した。
+  `machine_setup/` の plist と `run_all_backups.sh`、`template/scripts/backup_to_nas.sh` は削除済み
+- 廃止前にエージェントを登録したマシンでは解除する:
 
 ```bash
-cp ~/Git/research_template/machine_setup/com.yoda.git-nas-backup.plist ~/Library/LaunchAgents/
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.yoda.git-nas-backup.plist
+launchctl bootout gui/$(id -u)/com.yoda.git-nas-backup
+rm ~/Library/LaunchAgents/com.yoda.git-nas-backup.plist
 ```
-
-- 動作確認: `launchctl kickstart gui/$(id -u)/com.yoda.git-nas-backup` → `~/Library/Logs/git-nas-backup.log` を確認
-- 解除: `launchctl bootout gui/$(id -u)/com.yoda.git-nas-backup`
-- 新しいプロジェクトを作っても追加設定は不要（`~/Git/*/scripts/backup_to_nas.sh` を自動で拾う）
-- **注意 (macOS TCC)**: バックアップ先のファイルは作成元アプリに紐づき (com.apple.macl)、
-  別コンテキストの launchd から置換できない。このため各プロジェクトの `scripts/backup_to_nas.sh` は
-  エージェント登録済みマシンでは自動的にエージェント経由 (`launchctl kickstart`) に委譲する。
-  バックアップ先 (`~/SynologyDrive/Home/Archive/Git/`) のファイルを手動で作成・編集しないこと
 
 ---
 

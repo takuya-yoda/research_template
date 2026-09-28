@@ -24,5 +24,5 @@ EOF
 
 ## バックアップ（NAS）
 
-- `com.yoda.git-nas-backup.plist` — launchd 定期実行の設定
-- `run_all_backups.sh` — バックアップ本体
+廃止（2026-09-28）。プロジェクトの正本を NAS の bare リポジトリ + git-annex に移したため不要となり、
+`com.yoda.git-nas-backup.plist` と `run_all_backups.sh` を削除した。

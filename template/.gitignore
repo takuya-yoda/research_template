@@ -21,21 +21,14 @@
 *.run.xml
 build/
 
-# === PDF: 生成物・文献は追跡しない。図 (fig/ 配下) のみ追跡 ===
+# === PDF: 生成物は追跡しない。図 (fig/ 配下)・議論記録・文献は追跡 ===
 *.pdf
 !**/fig/**/*.pdf
 !**/fig/*.pdf
+!plan/discussions/**/*.pdf
+!survey/papers/**
 
-# === 文献 PDF 置場 (ローカル保管のみ) ===
-survey/papers/*
-!survey/papers/.gitkeep
-
-# === 議論記録の写真 (git 管理外。NAS へ日次バックアップ: scripts/backup_to_nas.sh) ===
-# PDF は全体ルール *.pdf で除外済み。メモ .md は追跡される
-plan/discussions/**/*.jpg
-plan/discussions/**/*.jpeg
-plan/discussions/**/*.png
-plan/discussions/**/*.heic
+# === 議論記録の写真・PDF と文献 PDF は git-annex で管理 (.gitattributes)。本体は NAS に置かれる ===
 
 # === Python ===
 .venv/
