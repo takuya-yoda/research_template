@@ -89,10 +89,6 @@ git switch main && git merge --no-ff feat/<機能名>
 - **配るのはコピー元の雛形 (`_requirements.md` `_design.md` `_template.md`) に限る**: 「コピーして使う」形式なら
   企画側が原本を編集しないため、雛形を何度改訂しても衝突しない。
   逆に中身を埋めさせる形式のファイル（`plan/research_plan.md` 等）を改訂すると全企画で衝突する
-- **`ai_instructions/` を編集する場合**: `~/.claude/CLAUDE.md` がこのパスを直接 import しているため、
-  ブランチをチェックアウトしている間は AI への指示自体が入れ替わる。
-  作業コピーは 1 機器に 1 つ（worktree で増やさない。`1-40_Areas.md`）なので、
-  `ai_instructions/` を触るブランチは短命にし、直ちに main へマージする
 
 ### 4. 雛形の更新を既存の企画へ反映する
 
