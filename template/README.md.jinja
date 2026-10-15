@@ -6,17 +6,23 @@
 
 | フォルダ | 役割 |
 |---|---|
-| [survey/](survey/) | 業界研究: 論文要約 md・レビュー tex・文献 DB (ref.bib)・文献 PDF (git-annex) |
+| [CONTEXT.md](CONTEXT.md) | 用語集（リポジトリ運用の語は雛形が定義。研究対象の語は `/grill-with-docs` が追記） |
+| [docs/](docs/) | 研究計画 (research_plan.md)・研究ログ (log.md)・議論記録 (discussions/)・主題ファイルとチケット (issues/)・ADR (adr/)・スキルへの読み替え (agents/)・雛形への要望 (template_feedback.md) |
+| [code/](code/) | Python 開発ルート (uv + src layout)。パッケージ ([code/src/](code/src/)) と実験 ([code/experiments/](code/experiments/)) |
+| [survey/](survey/) | 業界研究: 論文要約・調査ノート md・レビュー tex・文献 DB (ref.bib)・文献 PDF (git-annex) |
 | [theory/](theory/) | 理論計算ノート (tex)。1 ノート = 1 フォルダ |
 | [paper/](paper/) | 論文草稿。共同執筆・投稿段階で Overleaf 連携リポジトリへ分離 |
-| [code/](code/) | Python 開発ルート (uv + src layout) |
-| [plan/](plan/) | 研究計画 (research_plan.md)・研究ログ (log.md)・議論記録 (discussions/)・プログラム設計 (design/)・雛形への要望 (template_feedback.md) |
-| [archive/](archive/) | 過去の遺産。閲覧のみ・ビルド対象外 |
+| [archive/](archive/) | アーカイブ。閲覧のみ・ビルド対象外 |
 | [tex_common/](tex_common/) | 共通 tex 資産 (マクロ・体裁・bst・雛形)。ノートは置かない |
-| [scripts/](scripts/) | ノート/論文/議論記録の新規作成・md の PDF 化・共同研究者の初期設定 |
-| [.claude/](.claude/) | Claude Code の slash コマンド (commands/、例 `/term`) と検証エージェント (agents/)。個人設定 `.claude/settings*.json` は git 管理外 |
+| [scripts/](scripts/) | ノート/論文/議論記録の新規作成・md の PDF 化・共同研究者の初期設定・雛形移行 |
+| [.claude/](.claude/) | Claude Code の slash コマンド (commands/、例 `/term`) と検証エージェント (agents/、`spec-checker`)。個人設定 `.claude/settings*.json` は git 管理外 |
 
-企画の状態・期日・次の一手は `project.yml`（`~/` の運用規則 `1-30_Projects.md`）。
+企画の状態・期日・次の一手は `project.yml`（`~/` の運用規則 `1-30_Projects.md`）。規約は [CLAUDE.md](CLAUDE.md)。
+
+## 開発の進め方 (Mattpocock Skills)
+
+要件定義書・設計書は書かない。方針メモ → `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement` の列で、
+用語は `CONTEXT.md`、決定は `docs/adr/`、仕様とチケットは `docs/issues/` に残す。手順は [code/README.md](code/README.md)「skill を使った開発手順」。
 
 ## LaTeX: 書き方とビルド
 
@@ -45,10 +51,10 @@ latexmk -r ../../latexmkrc note.tex
 ```bash
 cd code
 uv sync             # 環境構築
-uv run python ...   # 実行
+uv run pytest       # テスト
 ```
 
-詳細と公開コードの切り出し手順は [code/README.md](code/README.md)。
+パッケージと実験の置き場所規則、方針転換時の凍結手順、公開コードの切り出し手順は [code/README.md](code/README.md)。
 
 ## 学術用語の裏付け (`/term`)
 
@@ -56,17 +62,11 @@ Claude Code で `/term <用語>` を使うと、用語辞典・標準教科書�
 [survey/glossary.md](survey/glossary.md) にキャッシュする（再出現語は再検索なしで即応答）。
 規約は [CLAUDE.md](CLAUDE.md) 参照（未検証の出典を権威的に提示しない・確信度を明示する）。
 
-## 設計文書の検証 (`design-checker`)
-
-`.claude/agents/design-checker.md` は、会話の文脈を持たずに `plan/` 直下の仕様と `survey/` だけを根拠に
-`plan/design/` 配下を検証し、検証結果と改善提案を分けて報告するエージェント。
-長い対話の後に自分の提案に引きずられず文書を点検するために使う。定義を編集したらセッションを開き直す。
-
 ## 同期（正本と窓口）
 
 正本は NAS の bare リポジトリ、GitHub (`origin`) は共有の窓口。手順の正典は `~/` の運用規則 `2-sync.md`。
 
-- 議論記録の写真・PDF (plan/discussions/) と文献 PDF (survey/papers/) は git-annex で管理し、本体は NAS に置く（規則は `.gitattributes`）。
+- 議論記録の写真・PDF (docs/discussions/)、文献 PDF (survey/papers/)、実験の結果 (code/experiments/**/results/) は git-annex で管理し、本体は NAS に置く（規則は `.gitattributes`）。
   GitHub には symlink のみが載る
 - 終える: `git annex add .` → `git add -A` → `git commit -m "<slug>: <何を変えた>"` → `git annex sync --content nas` → `git push origin main`
 - 確かめる: `git status --short` が空、`git log --oneline nas/main..HEAD` と `origin/main..HEAD` が空
@@ -79,8 +79,9 @@ Claude Code で `/term <用語>` を使うと、用語辞典・標準教科書�
 
 | 対象 | 場所 |
 |---|---|
-| 議論記録の写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) | `plan/discussions/<日付>_<話題>/` |
+| 議論記録の写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) | `docs/discussions/<日付>_<話題>/` |
 | 文献 PDF | `survey/papers/` |
+| 実験の結果 | `code/experiments/*/results/` |
 | 10 MB を超えるファイル | リポジトリ全体 |
 
 - clone 直後に `scripts/setup_collaborator.sh` を 1 回実行する（上記の誤 commit を pre-commit で止める。変更は `.git/` の中だけ）
@@ -99,5 +100,6 @@ copier update        # 最新タグとの差分を 3-way merge で適用
 git diff             # 内容を確認して commit
 ```
 
-生成元バージョンは `.copier-answers.yml` に記録されている (手動編集しない)。
-雛形への要望は `plan/template_feedback.md` に溜める（雛形のコピー元 `_requirements.md` `_design.md` や各 README を直接編集しない）。
+- v0.4.x 以前から生成した束は、先に `scripts/migrate_docs.sh` で `plan/` を `docs/` に移してから `copier update` する
+- 生成元バージョンは `.copier-answers.yml` に記録されている (手動編集しない)
+- 雛形への要望は `docs/template_feedback.md` に溜める（雛形のコピー元ファイルや各 README を直接編集しない）

@@ -1,6 +1,19 @@
 # code — Python 開発 ({{ project_name }})
 
-このフォルダを Python プロジェクトのルートとして開発する (uv + src layout)。
+このフォルダを Python プロジェクトのルートとして開発する (uv + src layout)。用語は [CONTEXT.md](../CONTEXT.md)。
+
+## 置き場所の規則
+
+| 場所 | 役割 | 規則 |
+|---|---|---|
+| `src/{{ project_name }}/` | パッケージ | 再利用でき、他者に示せるコード。テスト (`tests/`) を伴う |
+| `experiments/<YYYYMMDD>_<名前>/` | 実験 | 1 問い = 1 フォルダ。パッケージのみを import する。結果は `results/`（全量 git-annex） |
+
+- 迷ったら実験に書く。2 つ目の実験が同じコードを必要とした時点で、そのコードをパッケージへ昇格させる（実験どうしで import しない）
+- 実験の命名と構成は [experiments/README.md](experiments/README.md)
+- src layout（`code/src/<パッケージ>/`）を採る理由: テストがインストール済みパッケージを読む（カレントディレクトリ依存を避ける）、
+  公開切り出しがコピーで済む。構成を変えると `pyproject.toml` と本 README が `copier update` で衝突する
+- 共通化の判断: 2 案件目が現れるまで実験側に置く。昇格後に仕様を変えるときは、依存する実験が凍結済みなら触らず、新しい関数を足す
 
 ## セットアップ
 
@@ -18,9 +31,34 @@ uv add <package>                 # 依存を追加 (pyproject.toml + uv.lock が
 uv add --group dev <package>     # 開発用依存を追加
 ```
 
-- 再利用するコードは `src/{{ project_name }}/` にパッケージとして書く
-- 使い捨ての実験スクリプト・ノートブックは `code/` 直下や `code/experiments/` に置き、育ってきたら `src/` へ昇格させる
-- 図の出力はノート/論文から参照しやすいよう各ノートの `fig/` か `code/out/` へ
+## skill を使った開発手順
+
+Mattpocock Skills（`claude plugin install mattpocock-skills`。導入版は `docs/agents/domain.md`）を使う。
+issue tracker・用語集・ADR の置き場は `CLAUDE.md`「Agent skills」と `docs/agents/` に読み替えを書いてあるので、`/setup-matt-pocock-skills` は打たなくてよい。
+
+| 順 | 入力 | 得られる物 |
+|---|---|---|
+| 1 | `docs/issues/<YYYYMMDD>_<名前>.md` に方針メモを書く（`Status: needs-triage`） | grill の入力 |
+| 2 | `/grill-with-docs <方針メモのパス>` | 質疑による仕様の合意。用語は `CONTEXT.md`、決定は `docs/adr/` に記録される |
+| 3 | `/to-spec` | 主題ファイルを spec で書き直し（`Status: ready-for-agent`） |
+| 4 | `/to-tickets` | `docs/issues/<YYYYMMDD>_<名前>/NN-<slug>.md`（1 件 1 ファイル、依存順） |
+| 5 | `/implement <チケットのパス>` | `tdd` で実装 → 全テスト → `code-review` → commit |
+
+- 会話だけでは決まらない問いがあれば 2 と 3 の間で `/prototype`（成果物は `code/experiments/<YYYYMMDD>_<名前>/`）
+- 2〜4 は 1 つのコンテキストで通す（`/clear` `/compact` をしない）。5 はチケットごとに新しい会話で始め、1 回の入力で 1 チケット
+- 5 の後は code-review の指摘を直し、「チケットの状態と判定条件を更新して」と依頼する（自動では更新されない）
+- 作業は専用のブランチで行い、終わったら `main` に合流する
+- 主題ファイルを検証するときは `spec-checker` エージェント（`.claude/agents/`。会話の文脈を持たず `CONTEXT.md`・ADR・`survey/` のみを根拠にする）
+
+## 方針転換時の手順（レガシーへの凍結）
+
+研究の方針が変わり旧コードの大半が不要になったら、整理して使い続けるより凍結して作り直す方が速い。
+
+1. 旧 `code/` を丸ごと `legacy/code/` へ `git mv` する（独立した uv プロジェクトとして残す。`uv.lock` も一緒に）
+2. `legacy/README.md` に凍結日・再現コマンドを書き、`legacy/reproduce_check.sh`（主要な実験 1〜2 本を走らせ既知の値と照合）を置く
+3. `code/` を空のパッケージ・空の `tests/`・依存なしの `pyproject.toml` から作り直す
+4. レガシーは編集しない・import しない。数値の照合はレガシー側で基準値を書き出し、`code/tests/reference/` に置いて行う
+5. 理由を `docs/adr/` に 1 本書く
 
 ## 公開コードの切り出し (論文出版時)
 

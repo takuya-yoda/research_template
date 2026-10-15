@@ -1,7 +1,7 @@
 # テンプレートへの要望
 
 <!-- research_template を使っていて気づいた改善点をためる場所。新しい日付を上に追記する -->
-<!-- このプロジェクト固有の決定・方針変更は plan/log.md へ。議論そのものは plan/discussions/ へ -->
+<!-- この企画固有の決定・方針変更は docs/log.md と docs/adr/ へ。議論そのものは docs/discussions/ へ -->
 
 ## 書くこと
 
@@ -19,13 +19,13 @@
 - YYYY-MM-DD [対象パス] 事実 → 提案
 ```
 
-（例: `- 2026-08-19 [plan/design/_requirements.md] 7 節「非機能要件」を 3 案件とも空のまま出した → 引継想定タグへ落とす`）
+（例: `- 2026-10-04 [code/README.md] 実験どうしで import する連鎖が生じた → 実験はパッケージのみ import する規則を書く`）
 
 ## 雛形を直接編集しないこと
 
-`_requirements.md` / `_design.md` や各 README を書き換えると、`copier update` の
+各 README・`CLAUDE.md`・`docs/agents/` など雛形が配るファイルを書き換えると、`copier update` の
 3-way merge で衝突する。要望はこのファイルに書き、改訂はテンプレート側 (research_template) で行う。
-溜まった記録をもとに雛形を改訂し、タグを打って `copier update` で各プロジェクトへ配信する。
+溜まった記録をもとに雛形を改訂し、タグを打って `copier update` で各企画へ配信する。
 
 ## 記録
 

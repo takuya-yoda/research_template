@@ -6,7 +6,7 @@
 #
 # 内容 (変更は .git/ の中だけ。他の人には影響しない):
 #   pre-commit hook を置き、次の commit を止める
-#     - 議論記録の写真・PDF (plan/discussions/) と文献 PDF (survey/papers/) の追加
+#     - 議論記録の写真・PDF (docs/discussions/)、文献 PDF (survey/papers/)、実験の結果 (code/experiments/*/results/) の追加
 #     - 10 MB を超えるファイルの追加
 #     - symlink (git-annex 管理のファイル) の追加・変更・削除
 #   (.git/info/exclude は .gitignore の否定規則より弱く、PDF を隠せないので使わない)
@@ -46,8 +46,10 @@ while IFS= read -r -d '' meta && IFS= read -r -d '' path; do
         ng=1
     elif [ "$newmode" != 000000 ] && [ "$newmode" != 160000 ]; then
         case "$path" in
-            plan/discussions/*.pdf|plan/discussions/*.jpg|plan/discussions/*.jpeg|plan/discussions/*.png|plan/discussions/*.heic)
+            docs/discussions/*.pdf|docs/discussions/*.jpg|docs/discussions/*.jpeg|docs/discussions/*.png|docs/discussions/*.heic)
                 echo "NG (議論記録の写真・PDF): $path" >&2; ng=1; continue ;;
+            code/experiments/*/results/*)
+                echo "NG (実験の結果): $path" >&2; ng=1; continue ;;
             survey/papers/.gitkeep) ;;
             survey/papers/*)
                 echo "NG (文献 PDF): $path" >&2; ng=1; continue ;;

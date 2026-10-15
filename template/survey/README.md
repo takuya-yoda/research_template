@@ -3,7 +3,7 @@
 | 場所 | 内容 | git 管理 |
 |---|---|---|
 | `papers/` | 参照頻度の高い文献 PDF | ✓ (git-annex。本体は NAS) |
-| `notes/` | 論文 1 本ごとの要約 md (`notes/_template.md` をコピー) | ✓ |
+| `notes/` | 論文 1 本ごとの要約 md (`notes/_template.md` をコピー、ファイル名は bibkey) と、手法・アルゴリズムの調査ノート md (`<YYYYMMDD>_<topic>.md`。`research` スキルの出力先) | ✓ |
 | `review/` | 複数の結果を独自の視点でまとめ直す tex ノート | ✓ |
 | `ref.bib` | 文献データベース (全ノート・論文から共通参照) | ✓ |
 | `glossary.md` | 学術用語の裏付け付き定義キャッシュ (`/term` が参照・追記) | ✓ |
@@ -20,3 +20,4 @@ scripts/new_note.sh survey/review gup_review en
 
 - PDF は `papers/` に置く。git-annex で管理され GitHub には symlink のみが載るので、arXiv 番号を md に記録しておく
 - `ref.bib` の bibkey と `notes/` のファイル名を揃えると管理しやすい
+- コード設計のために手法・アルゴリズムを調べた文章は `notes/<YYYYMMDD>_<topic>.md` に置く（論文 1 本に紐づかない調査もここ）。`research` スキルはこの慣習に合わせて保存する

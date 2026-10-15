@@ -1,0 +1,43 @@
+# プロジェクト規約
+
+## 学術用語・出典の扱い
+
+- 学術用語や主張を述べるとき、**検証していない出典を権威的に提示しない**。
+  記憶ベースの引用は確信度（検索確認済み／訓練知識ベース／推定）を明示する。
+- 用語辞典・標準教科書・広い普及の3点で裏付けたフルな確認が必要なときは `/term <用語>` を使う。
+- 検証済みの用語定義は `survey/glossary.md` にキャッシュされる（`/term` が参照・追記）。
+
+## コードの置き場所
+
+- 用語は `CONTEXT.md` に従う（パッケージ／実験／昇格／レガシー／アーカイブ）
+- 新しいコードは `code/` に置く。パッケージ = `code/src/{{ project_name }}/`（再利用でき、他者に示せるコード。テストを伴う）、
+  実験 = `code/experiments/<YYYYMMDD>_<名前>/`（1 問い = 1 フォルダ。名前は英小文字と `-`）
+- 迷ったら実験に書く。実験はパッケージのみを import する。実験どうしで import しない。
+  2 つ目の実験が同じコードを必要とした時点でパッケージへ昇格させる
+- 実験の結果は `code/experiments/<...>/results/` に置く（全量 git-annex）。`code/out/` は作らない
+- `legacy/` があれば**編集しない・import しない・複写して出発点にしない**。数値の照合相手としてのみ使う（`code/README.md`）
+- `archive/` は編集しない
+- 要件定義書・設計書は作らない。認識合わせは `/grill-with-docs`、決定は `docs/adr/`、仕様とチケットは `docs/issues/`
+
+## 文書の置き場所
+
+- 研究計画 `docs/research_plan.md`、研究ログ `docs/log.md`、議論記録 `docs/discussions/<YYYYMMDD>_<topic>/`
+- 雛形（research_template）への要望は `docs/template_feedback.md`。雛形のコピー元ファイルや各 README は直接編集しない（`copier update` で衝突する）
+
+## Agent skills
+
+### Issue tracker
+
+issue と spec は `docs/issues/` の markdown で管理する（GitHub Issues は使わない）。主題ファイル `docs/issues/<YYYYMMDD>_<名前>.md` を書き直して育て、チケットは同名フォルダに 1 件 1 ファイル。スキル本文の `.scratch/` はこれに読み替える。See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+既定の 5 つ（`needs-triage` `needs-info` `ready-for-agent` `ready-for-human` `wontfix`）を主題ファイルとチケットの `Status:` 行に書く。完了は `closed`。See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+single-context。用語集はルートの `CONTEXT.md`、ADR は `docs/adr/`。See `docs/agents/domain.md`.
+
+### 手順
+
+Mattpocock Skills を使った開発の列（方針メモ → `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement`）は `code/README.md`「skill を使った開発手順」。
