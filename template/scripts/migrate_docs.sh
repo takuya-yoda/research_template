@@ -4,8 +4,9 @@
 # 使い方:
 #   scripts/migrate_docs.sh            # 実行 (working tree が clean であること)
 #   scripts/migrate_docs.sh --dry-run  # 何をするかだけ表示
-# 手順:
-#   1. このスクリプトを実行 → git diff --cached で確認 → commit
+# 手順 (このスクリプトは v0.5.0 が配るため、update 前の束には無い。雛形の作業コピーから複写する):
+#   0. cp ~/40_Areas/43_Tooling/research_template/template/scripts/migrate_docs.sh scripts/
+#   1. scripts/migrate_docs.sh → git diff --cached で確認 → git commit (このスクリプトは add しない。copier update が配る)
 #   2. copier update               (v0.5.0 の差分が docs/ に対して当たる)
 # 内容 (すべて git mv / git rm。履歴は保たれる):
 #   - plan/ → docs/ (research_plan.md log.md discussions/ template_feedback.md)
@@ -31,18 +32,18 @@ if [ -d docs ]; then
     echo "エラー: docs/ が既に存在します。手で統合してから再実行してください" >&2
     exit 1
 fi
-if [ -n "$(git status --short)" ] && [ "$DRY" -eq 0 ]; then
+if [ -n "$(git status --short --untracked-files=no)" ] && [ "$DRY" -eq 0 ]; then   # 未追跡 (このスクリプト自身) は許す
     echo "エラー: working tree が clean ではありません" >&2
     exit 1
 fi
 
-run git mv plan docs
-for f in docs/design/_requirements.md docs/design/_design.md docs/design/README.md; do
+for f in plan/design/_requirements.md plan/design/_design.md plan/design/README.md; do
     [ -f "$f" ] && run git rm -q "$f"
 done
-if [ -d docs/design ] && [ -z "$(ls -A docs/design 2>/dev/null)" ]; then
-    run rmdir docs/design
+if [ -d plan/design ] && [ -z "$(ls -A plan/design 2>/dev/null)" ]; then
+    run rmdir plan/design
 fi
+run git mv plan docs
 run mkdir -p code/experiments
 
 # 文書内の参照を置換 (plan/ → docs/)。tex は触らない
@@ -59,4 +60,4 @@ else
 fi
 
 echo
-echo "完了。次に: git diff --cached --stat → git commit -m \"<slug>: plan/ を docs/ へ移行\" → copier update"
+echo "完了。次に: git diff --cached --stat → git commit -m \"<slug>: plan/ を docs/ へ移行\" (このスクリプトは add しない) → copier update"

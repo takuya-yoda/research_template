@@ -5,6 +5,17 @@
 _min_copier_version: "9.0.0"
 _subdirectory: template
 
+# 企画側が中身を埋めるファイル。生成時に置き、update では触らない
+# (update で触ると、企画側の内容と雛形の初期値が 3-way で衝突し雛形側が採られる)
+_skip_if_exists:
+  - CONTEXT.md
+  - docs/research_plan.md
+  - docs/log.md
+  - docs/template_feedback.md
+  - survey/glossary.md
+  - survey/ref.bib
+  - code/pyproject.toml
+
 project_name:
   type: str
   help: プロジェクト名 (小文字英数字と _ のみ。Python パッケージ名にもなる)
