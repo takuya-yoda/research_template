@@ -9,7 +9,7 @@
 - 掲載誌 / arXiv:
 - DOI / arXiv ID:
 - bibkey (survey/ref.bib のエントリ名):
-- PDF: survey/papers/xxx.pdf (ローカル保管・git 管理外)
+- PDF: survey/papers/xxx.pdf (git-annex。本体は NAS)
 
 ## 要点 (3 行以内)
 

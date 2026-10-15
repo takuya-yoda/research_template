@@ -1,0 +1,8 @@
+* annex.largefiles=largerthan=10MB
+plan/discussions/**/*.pdf  annex.largefiles=anything
+plan/discussions/**/*.jpg  annex.largefiles=anything
+plan/discussions/**/*.jpeg annex.largefiles=anything
+plan/discussions/**/*.png  annex.largefiles=anything
+plan/discussions/**/*.heic annex.largefiles=anything
+survey/papers/**           annex.largefiles=anything
+survey/papers/.gitkeep     annex.largefiles=nothing

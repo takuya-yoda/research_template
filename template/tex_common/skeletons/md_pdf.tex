@@ -1,0 +1,19 @@
+% pandoc テンプレート: md → PDF 変換用 (scripts/md_to_pdf.sh が使用)
+% note_ja.tex と同じ文書クラス・プリアンブルで md を組版する
+\documentclass[11pt,a4paper,uplatex,dvipdfmx]{ujarticle}
+\usepackage{note-layout}
+% pandoc 出力が要求する追加分 (note-layout に無いもののみ)
+\usepackage{longtable,booktabs}
+\usepackage{fancyvrb}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+\begin{document}
+$if(title)$
+\title{$title$}
+\date{$if(date)$$date$$else$\today$endif$}
+\maketitle
+$endif$
+$body$
+\end{document}

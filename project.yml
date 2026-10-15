@@ -1,0 +1,15 @@
+slug: research_template    # プロジェクトのフォルダ名と一致．一意
+category: 43_Tooling       # 親フォルダ名と一致．30→50 の移動で変えない
+title: 研究企画用 Copier 雛形 research_template   # プロジェクトの full タイトル
+summary: 研究企画の copier 雛形   # 1 行．リマインドに出す
+priority: medium           # high / medium / low
+status: active             # active / waiting / postponed / done / archived
+started: 2026-07-06        # 立項日 YYYY-MM-DD．移行物は最古ファイルの日付
+deadline:
+  initial:                 # 着手時の期日．以後変えない
+  current:                 # 現在の期日．変更理由は commit メッセージに
+next: feat/plan-design を --no-ff で main へ merge し v0.4.0 を打つ   # 次の一手
+from:
+  topics: []               # 引き継いだ 20_Resources の話題 ID
+  projects: []             # 引き継いだ企画の slug
+updated: 2026-10-15        # YYYY-MM-DD

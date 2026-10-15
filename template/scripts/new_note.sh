@@ -8,6 +8,10 @@
 #     -> theory/berry_phase/note.tex (日本語 upLaTeX) と theory/berry_phase/fig/ を作成
 #   scripts/new_note.sh survey/review gup_review en
 #     -> survey/review/gup_review/note.tex (英語 pdfLaTeX) を作成
+#   scripts/new_note.sh paper gup_chern_full ja
+#     -> paper/gup_chern_full/note.tex を作成
+#        省略なしの pre 論文 (投稿前に計算を全て残す版) はノート形式で paper/ に置く。
+#        投稿用の草稿 (ジャーナル書式) は scripts/new_paper.sh で別に作る
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

@@ -41,5 +41,5 @@ cat > "$DIR/memo.md" <<EOF
 EOF
 
 echo "作成しました: $DIR/memo.md"
-echo "黒板写真 (.pdf/.jpg) も同じフォルダへ (git 管理外)。plan/log.md にも 1 行残すこと"
-echo "NAS へは日次で自動バックアップされます。即時反映: scripts/backup_to_nas.sh"
+echo "黒板写真 (.pdf/.jpg) も同じフォルダへ (git-annex)。plan/log.md にも 1 行残すこと"
+echo "NAS へ送る: git annex add . → commit → git annex sync --content nas"
