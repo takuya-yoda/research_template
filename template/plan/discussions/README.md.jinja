@@ -1,6 +1,6 @@
 # plan/discussions — 議論の一次記録
 
-共同研究者・指導教員との議論メモや黒板写真を保管する。1 議論 = 1 フォルダ。
+共同研究者・指導教員との議論メモや黒板写真を置く。1 議論 = 1 フォルダ。
 
 ```
 plan/discussions/
@@ -17,19 +17,18 @@ scripts/new_discussion.sh <トピック>   # 今日の日付でフォルダと m
 ```
 
 - 議論の要点・決定事項は `plan/log.md` にも日付付きで 1 行残し、詳細はここへ（日付で相互参照）
-- メモ (.md) は git で追跡される。写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) は git-annex で管理される
+- メモ (.md) は git で追跡される。写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) は git-annex で管理される（規則は `.gitattributes`）
 
-## 写真の保管 (NAS 正本)
+## 写真の同期（正本）
 
-写真・PDF は git-annex に入り、本体は NAS に置かれる。GitHub には symlink のみが載る。
+写真・PDF は git-annex に入り、本体は NAS の正本に置かれる。GitHub には symlink のみが載る。列は `2-sync.md`。
 
-- 写真を置いた後:
+- 写真を置いた後（終える）:
 
 ```bash
 git annex add .
-git commit -m "<対象>: <何を変えた>"
+git commit -m "<slug>: <何を変えた>"
 git annex sync --content nas
 ```
 
-- 手元に本体が無いとき: `git annex get <path>`
-- `scripts/backup_to_nas.sh` による日次バックアップは、NAS 正本化に伴い不要となったため 2026-09-28 に廃止した
+- 手元に本体が無いとき（取り寄せる）: `git annex get <path>`
