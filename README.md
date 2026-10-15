@@ -69,8 +69,8 @@ copier update --vcs-ref feat/<機能名>
 git diff                                  # 確認して commit
 
 # 3. 使ってみる → フィードバックを雛形側へ反映 → commit/同期 → 2 を再実行（何周でも可）
-#    気づいた点は企画側の plan/template_feedback.md に溜まる。ここから拾って雛形を直す
-#    cat ~/30_Projects/*/*/plan/template_feedback.md
+#    気づいた点は企画側の docs/template_feedback.md に溜まる。ここから拾って雛形を直す
+#    cat ~/30_Projects/*/*/docs/template_feedback.md
 
 # 4. 確定したら main へマージしてタグを打つ（ここで初めて全企画へ配信される）
 cd ~/40_Areas/43_Tooling/research_template
@@ -86,9 +86,9 @@ git switch main && git merge --no-ff feat/<機能名>
   ブランチもプレリリースタグ (`v0.4.0-rc1` 等) も自動では配信されない
 - **`--vcs-ref` はその ref までの全差分を適用する**: 試用先は先に `copier update` で最新タグまで上げておく。
   古いバージョンのまま試用ブランチを当てると、途中のタグの変更まで同時に降ってくる
-- **配るのはコピー元の雛形 (`_requirements.md` `_design.md` `_template.md`) に限る**: 「コピーして使う」形式なら
-  企画側が原本を編集しないため、雛形を何度改訂しても衝突しない。
-  逆に中身を埋めさせる形式のファイル（`plan/research_plan.md` 等）を改訂すると全企画で衝突する
+- **改訂を重ねるのはコピー元の雛形 (`survey/notes/_template.md` 等) と規約文書 (README・`CLAUDE.md`・`docs/agents/`) に限る**:
+  コピー元は企画側が原本を編集しないため衝突しない。規約文書は企画側が直接編集しない規則（`docs/template_feedback.md`）で守る。
+  中身を埋めさせる形式のファイル（`docs/research_plan.md` `CONTEXT.md` 等）を改訂すると全企画で衝突するので、生成直後の初期値以外は変えない
 
 ### 4. 雛形の更新を既存の企画へ反映する
 
@@ -105,12 +105,14 @@ git diff                  # 反映内容を確認して commit
 - どのバージョンから生成されたかは各企画の `.copier-answers.yml` に記録されている（手動編集しない）
 - 質問の回答を変えたい場合は `copier update --data author_email=...` のように上書きできる
 - 保管済みの束（`50_Archives`）は更新しない（中身を編集しない規則。`1-50_Archives.md`）
+- v0.4.x 以前から生成した束は、`copier update` の前に `scripts/migrate_docs.sh`（雛形 v0.5.0 が配る）で `plan/` を `docs/` に移す。
+  改名を 3-way merge に任せると `log.md` 等が削除・衝突する
 
 ### 5. 同期（正本と窓口）
 
 生成された各企画の正本は NAS の bare リポジトリ、GitHub は窓口。列は `2-sync.md`。
 
-- 議論記録の写真・PDF (plan/discussions/) と文献 PDF (survey/papers/) は git-annex で管理する
+- 議論記録の写真・PDF (docs/discussions/)、文献 PDF (survey/papers/)、実験の結果 (code/experiments/**/results/) は git-annex で管理する
   （規則は `template/.gitattributes`）。本体は NAS に置かれ、GitHub には symlink のみが載る
 - 前提: 各企画で `git annex init` を済ませていること（立項の列に含まれる）。
   済ませていない clone で `git add` すると、写真・PDF が Git 本体に入り GitHub に載る

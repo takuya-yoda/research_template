@@ -1,10 +1,10 @@
-# plan/discussions — 議論の一次記録
+# docs/discussions — 議論の一次記録
 
 共同研究者・指導教員との議論メモや黒板写真を置く。1 議論 = 1 フォルダ。
 
 ```
-plan/discussions/
-└── YYYY-MM-DD_<トピック>/
+docs/discussions/
+└── YYYYMMDD_<トピック>/
     ├── memo.md        # 議論メモ (git 追跡される)
     ├── board_1.pdf    # 黒板写真・スキャン (git-annex)
     └── board_2.jpg
@@ -16,8 +16,10 @@ plan/discussions/
 scripts/new_discussion.sh <トピック>   # 今日の日付でフォルダと memo.md を作成
 ```
 
-- 議論の要点・決定事項は `plan/log.md` にも日付付きで 1 行残し、詳細はここへ（日付で相互参照）
+- 議論の要点・決定事項は `docs/log.md` にも日付付きで 1 行残し、詳細はここへ（日付で相互参照）
+- 議論で決まった方針は `docs/issues/` の主題ファイルへ、元に戻しにくい決定は `docs/adr/` へ
 - メモ (.md) は git で追跡される。写真・PDF (.pdf / .jpg / .jpeg / .png / .heic) は git-annex で管理される（規則は `.gitattributes`）
+- 日付フォルダは `YYYYMMDD_`（`~/` の運用規則の日付フォルダと同じ形）。旧形式 `YYYY-MM-DD_` のフォルダは改名しない
 
 ## 写真の同期（正本）
 

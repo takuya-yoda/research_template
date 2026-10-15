@@ -25,10 +25,14 @@ build/
 *.pdf
 !**/fig/**/*.pdf
 !**/fig/*.pdf
-!plan/discussions/**/*.pdf
+!docs/discussions/**/*.pdf
 !survey/papers/**
+!code/experiments/**/results/**
 
-# === 議論記録の写真・PDF と文献 PDF は git-annex で管理 (.gitattributes)。本体は NAS に置かれる ===
+# === 議論記録の写真・PDF・文献 PDF・実験の結果は git-annex で管理 (.gitattributes)。本体は NAS に置かれる ===
+
+# === Mattpocock Skills: local tracker の既定 .scratch/ は使わない (docs/issues/ に読み替え。docs/agents/issue-tracker.md) ===
+.scratch/
 
 # === Python ===
 .venv/

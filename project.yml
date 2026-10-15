@@ -8,7 +8,7 @@ started: 2026-07-06        # 立項日 YYYY-MM-DD．移行物は最古ファイ�
 deadline:
   initial:                 # 着手時の期日．以後変えない
   current:                 # 現在の期日．変更理由は commit メッセージに
-next: feat/plan-design を --no-ff で main へ merge し v0.4.0 を打つ   # 次の一手
+next: timedelay-causal で migrate_docs.sh → copier update を試し，各企画の docs/template_feedback.md を溜めて v0.5.x / v0.6.0 へ   # 次の一手
 from:
   topics: []               # 引き継いだ 20_Resources の話題 ID
   projects: []             # 引き継いだ企画の slug
